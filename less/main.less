@@ -1,0 +1,505 @@
+.module 
+{
+	background   : #F9F9F9;
+	border       : 	solid 1px #BDD0D9;
+	text-shadow  : 0 1px 0 @white;
+	margin-bottom: @content-padding;
+	.border-radius(5px);
+	&.other-side-content
+	{
+		.content { padding: @content-padding; }
+	}
+
+	ul:last-child {
+		li:last-child .list-link { .border-radius(5px 5px 0 0 ) }
+		li:last-item .list-link { .border-radius(5px 5px 0 0 ) }
+	}
+
+	.flex-module { line-height: 16px }
+}
+
+.mini-profile
+{
+	font-size: 12px;
+	img { float:left; }
+
+	.account-group {
+		padding: 16px;
+
+		a {
+			color: 	#333;
+
+			&:hover
+			{
+				color: @blue;
+				text-decoration: none;
+				.fullname { text-decoration: underline; }
+			}
+		}
+	}
+
+	.fullname {
+		display    : block;
+		font-size  : 14px;
+		margin-left: 48px;
+		line-height: 16px;
+	}
+
+	.metadata {
+		font-size  : 11px;
+		color      :lighten(@textColor, 50%);
+		line-height: 16px;
+		margin-left: 16px;
+	}
+
+	form {
+		padding: 0;
+		margin : 12px 16px 3px;
+	}
+}
+
+.container {
+	&.wrap {
+		#translucent > .background(@white, .3);
+		margin-top: -20px;
+		padding   :24px 14px 15px;
+	}
+}
+
+.stats {
+	padding      : 0;
+	margin       : 0;
+	overflow     : hidden;
+	border-top   : 1px solid #E8E8E8;
+	border-bottom: 1px solid #E8E8E8;
+
+	a {
+		display       : block;
+		padding       : 7px @content-padding;
+		text-transform: uppercase;
+		border-left   : 1px solid #e8e8e8;
+		color         : #999;
+		font-size     : 10px;
+	}
+
+	li { 
+		a {
+			strong { 
+				display  : block;
+				color    : @black;
+				font-size: 16px;
+			}
+		}
+		display: inline;
+		float  : left;
+
+		&:first-child a { border-left: 0; }
+	}
+}
+
+textarea {
+	 &.tweet-box {
+		width : 225px;
+		height: 19px;
+		color : #AAA;
+		resize: none;
+	}
+}
+/* -------------------------------------------
+ * NAVBAR
+ */
+.navbar {
+	&.navbar-fixed-top {
+		.navbar-inner {
+			background: url(../images/twitter_web_sprite_bgs.png) repeat-x;
+			.box-shadow(0 3px 5px rgba(0,0,0,.25));
+		}
+	}
+}
+/* -------------------------------------------
+ * MAIN CONTENT (TWEETS)
+ */
+.content-main {
+	.content-header {
+		border-bottom: solid 1px #E8E8E8;
+
+		h2 { 
+			font-size  : 18px;
+			font-weight: bold;
+			margin     : 0;
+		}
+
+		.header-inner {
+			min-height: 20px;
+			padding   : 12px;
+		}
+	}
+
+	.stream, .stream-items {
+		position: relative;
+		
+		.user-actions {
+			float: right;
+			.btn { margin: 0 6px;}
+		}
+	}
+
+	.new-tweets-bar {
+		&.well {
+			border-left : 0;
+			border-right: 0;
+			text-align  : center;
+			background  : whiteSmoke;
+			font-size   : 13px;
+			padding     : 10px;
+			color       : @blue;
+			cursor      :pointer;
+			.border-radius(0);
+			&:hover { background: #EEE;}
+			.box-shadow(inset 0 1px 3px rgba(0,0,0,.07));
+		}
+	}
+/* -------------------------------------------
+ * FOLLOWING PAGE
+ */
+.following-stream {
+	.btn { 
+		margin-left: 2px !important;
+		margin-right: 0 !important;
+		font-weight: bold;
+	}
+	.content { margin-right: 155px; }
+}
+i.follow { 
+	background: url(../images/twitter_web_sprite_icons.png) no-repeat 0 -430px;
+	width: 18px;
+	height: 14px;
+}
+/* -------------------------------------------
+ * SINGLE TWEET
+ */
+	.tweet {
+		cursor       : pointer;
+		position     : relative;
+		min-height   : 51px;
+		border-bottom: 1px solid #E8E8E8;
+		padding      : 9px 12px;
+		&:hover{ background-color: darken(@white, 8%); }
+
+		.time {
+			position  : relative;
+			float     : right;
+			margin-top: 1px;
+			color     :#BBB;
+
+			a { 
+				color    : #999;
+				font-size: 12px;
+			}
+		}
+		.invisible {
+					font-size  : 0;
+					line-height: 0;
+				}
+	}
+}
+
+.stream-item {
+	.content {
+		margin-left: 58px;
+	}
+}
+.stream-item-header {
+	.account-group {
+		color: #999;
+	}
+	.avatar {
+		position: absolute;
+		top   : 12px;
+		left  : 12px;
+		width : 48px;
+		height: 48px;
+	}
+}
+.avatar {
+	.border-radius(5px);
+}
+
+.fullname {
+	font-weight: bold;
+	color      : #333;
+}
+.hidden { display: none; }
+
+s { text-decoration: none; }
+
+// Twitter Sign-in
+.front-bg {
+	position  : fixed;
+	width     : 200%;
+	height    : 200%;
+	left      : -50%;
+	background: @black;
+
+	img {
+		margin    : auto;
+		min-width : 50%;
+		min-height: 50%;
+		top       : 0;
+		left      : 0;
+		right     : 0;
+		bottom    : 0;
+	}
+	.front-image{ display:block;}
+
+}
+
+.front-card {
+	position: absolute;
+	left    : 50%;
+	top     : 50%;
+	height  : 328px;
+	width   : 838px;
+	margin  : -154px 0 0 -418px;
+}
+
+.front-welcome-text {
+	position   :absolute;
+	left       : 0;
+	width      : 470px;
+	font-size  : 20px;
+	font-weight: 300;
+	line-height: 22px;
+	color      : #EEE;
+	text-align : left;
+	text-shadow: @black 0 1px 2px;
+
+	h1 { 
+		font-size  : 20px;
+		font-weight: 700;
+		color      : @white;
+		margin     : 0;
+		padding    : 0;
+	}
+
+	p { 
+		margin : 0;
+		padding: 0;
+	}
+}
+
+.front-signin, .front-signup {
+	background   : @white;
+	border-left  : solid 1px #EEE;
+	border-right : solid 1px #EEE;
+	border-bottom: solid 1px #CCC;
+	.box-shadow(0 1px 0 rgba(0,0,0,.1));
+	.border-radius(4px);
+	#gradient > .vertical(@white, #ddd);
+
+	form {
+		padding: 0;
+		margin : 12px 16px 3px;
+	}
+}
+
+.front-signin {
+	position: absolute;
+	top     : 0;
+	left    : 536px;
+	width   : 300px;
+	height  : 108px;
+
+	.username {
+		position: absolute;
+		top     : 12px;
+		left    : 12px;
+		width   : 276px;
+		color   : #333;
+	}
+
+	.password { 
+		width: 100%;
+	}
+
+	.password-signin {
+		position: absolute;
+		top     : 48px;
+		left    : 12px;
+	}
+
+	.flex-table-primary,
+	.flex-table-secondary {
+		vertical-align: top;
+	}
+
+	.remember-forgot {
+		position: absolute;
+		top     : 82px;
+		left    : 12px;
+		margin  : 0;
+		width   : 276px;
+	}
+
+	.remember,
+	.separator,
+	.forgot {
+		display    : inline;
+		margin     : 0;
+		font-size  : 11px;
+		line-height: 13px;
+		color      : #999;
+		text-shadow: 0 1px 0 rgba(255,255,255, .6);
+
+		input[type="checkbox"] {
+			margin        : 4px 0 0 0;
+			height        : 13px;
+			vertical-align: top;
+		}
+	}
+
+	.separator {
+		margin     : 0 1px 0 2px;
+		font-weight: bold;
+	}
+}
+
+.front-signup {
+	position: absolute;
+	top     : 121px;
+	left    : 536px;
+	width   : 300px;
+	height  : 218px;
+
+	h2 {
+		position     : relative;
+		display      : block;
+		padding      : 0 14px;
+		margin-bottom: 12px;
+		font-size    : 16px;
+		font-weight  : 300;
+		color        : #777;
+		border-bottom: 1px solid #e2e2e2;
+		.box-shadow(0 1px 0 @white);
+		text-shadow  : 0 1px 0 rgba(255,255,255, .6);
+
+		strong {
+			font-weight: 500;
+			color: #333
+		}
+	}
+
+	button {
+		position   : absolute;
+		bottom     : 12px;
+		right      : 14px;
+		height     : 30px;
+		font-weight: bold;
+		margin     : 0;
+		.box-shadow( 0 1px 0 @white );
+
+		&.btn-signup {
+			background-color : #fd9a0f;
+			background-repeat: repeat-x;
+			#gradient > .vertical(#fee94f, #fd9a0f);
+			border-color: #FA2;
+		}
+	}
+
+	.fullname,
+	.email,
+	.password {
+		position: absolute;
+		left    : 12px;
+		width   : 276px;
+		color   : #333;
+		input { width: 260px; }
+	}
+
+	.fullname { top: 64px; }
+	.email { top: 100px; }
+	.password { top: 136px; }
+}
+
+input.email-input {
+	width: 261px;
+}
+
+#signin-password { 
+	width: 177px;
+	margin-right: 10px;
+}
+
+/* -------------------------------------------
+ * PROFILE MODULE
+ */
+ .profile-header-inner {
+ 	height: 260px - (2 * @content-padding);
+ 	padding: 12px;
+ 	.border-radius(5px 5px 0 0);
+ 	text-align: center;
+ 	color:white;
+ 	text-shadow: none;
+ 	background: url(../images/grey_header_web.png) no-repeat 0 0;
+ 	 img.avatar { 
+ 	 	border: solid 4px white;
+ 	 	.border-radius(3px);
+ 	 	margin-bottom: @content-padding;
+ 	 }
+ }
+
+ .profile-card-inner {
+ 	width: 85%;
+ 	margin-left: auto;
+ 	margin-right: auto;
+ 	h1,h2 { color: white;}
+ 	h1 { font-size: 24px; padding: 0; margin: 0; line-height: 20px }
+ 	h2 { font-size: 18px; padding: 0; margin: 0; font-weight: normal;}
+
+ }
+
+ .profile-banner-footer {
+ 	.btn { margin: @content-padding @content-padding 0;}
+ }
+
+
+
+ /* -------------------------------------------
+  * DIRECT MESSAGES
+  */
+  #dm {
+  	.modal-body { padding: 0;}
+  }
+
+  /* ------------------------------------------
+   * MODAL
+   */
+
+   .modal-header {
+   	padding: 15px 15px 14px;
+   	border-bottom: 1px solid #E8E8E8;
+   	background-color: #EEE;
+   	.border-radius( 5px 5px 0 0);
+   	h3 { font-size: 18px; line-height: 1; }
+   }
+
+.twttr-dialog-header .twttr-dialog-close, .profile-modal-header .twttr-dialog-close {
+	float: right;
+	width: 12px;
+	height: 13px;
+	background: url(../images/twitter_web_sprite_icons.png) no-repeat 0 -510px;
+	cursor: pointer;
+}
+
+.modal .twttr-dialog-footer {
+	.border-radius (0 0 5px 5px );
+	background-color: #EEE;
+	padding: 10px 15px;
+	font-size: 12px;
+	color: #999;
+	text-align: center;
+	text-shadow: 0 1px 0 #FFF;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5);
+	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5);
+}
