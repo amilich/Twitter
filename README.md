@@ -17,4 +17,6 @@ See: compsci.dalton.org:8080/amilich/twitter_dir/twitter-home.jsp
 - __CSS preprocessing language:__ [LESS](http://lesscss.org/)
 - __Build Tool:__ [CodeKit](http://incident57.com/codekit/)
 
-Uses JSP, MySQL, and Javascript to recreate Twitter. 
+Uses JSP, MySQL, and Javascript to recreate Twitter. Includes twitter signup, settings, tweeting, following, retweeting, favoriting, and replying. Session variables and cookies maintain user's session. 
+
+Bootstrap theme from [Bootswatch](http://bootswatch.com/)
