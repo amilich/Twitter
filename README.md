@@ -10,7 +10,7 @@ See: compsci.dalton.org:8080/amilich/twitter_dir/twitter-home.jsp
 - [The Barack Obama Campaign](http://www.barackobama.com/)
 - _Put together by:_ [Regis Zaleman](http://www.dalton.org)
 - _For:_ [Gordy Campbell](http://www.dalton.org)
-- _Coded by:_ [Andrew Milich] 
+- _Coded by:_ [Andrew Milich](github.com/amilich)
 
 ## Using
 - __Text Editor:__ [Sublime Text 3](http://www.sublimetext.com/3)
