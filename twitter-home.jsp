@@ -12,28 +12,33 @@
 <!doctype html>
 
 <%
+	/*
+	 *	Read username, password, url from secrets file. 
+	 */
 	Scanner sc = new Scanner(new FileReader("/home/amilich/public_html/twitter_dir/keys.txt"));
 	String db_user = sc.nextLine(); 
 	String db_password = sc.nextLine(); 
 	String db_url = sc.nextLine(); 
 
-	//out.println(session.getAttribute( "login_ID" )); 
 	//there is a session variable, but using a cookie makes this unnecessary 
 	String l_ID = request.getParameter("login_ID");
 	ArrayList<Integer> people_following = new ArrayList<Integer>();
 
+	//validate using session variable
 	try {
 		String session_l_ID = (String)session.getAttribute("login_ID");
-		//out.println(session_l_ID);
 		if(Integer.parseInt(session_l_ID) != Integer.parseInt(l_ID)){
 			response.sendRedirect("twitter-signin.jsp"); 
 		}
 	}
 	catch(Exception e){
+		//if this is not true, redirect to signin. 
 		response.sendRedirect("twitter-signin.jsp"); 
 	}
 
+	//gather information from queries
 	try {
+		//various numbers to be displayed 
 	    int tweet_count = 0;
 		int follower_count = 0; 
 		int following_count = 0; 
@@ -41,8 +46,8 @@
 		String first_name = ""; 
 		String last_name = ""; 
 		String image_URL = ""; 
-		//sql query:
 		
+		//sql query:
 		String url = "";
 		String tweet_count_q = "SELECT COUNT(b.tweet_ID) FROM login_t a,tweets_t b WHERE b.login_ID=a.login_ID and a.login_ID=" + l_ID +";"; //get all rows int he student database
 		String follower_count_q = "SELECT COUNT(b.follower_ID) AS num_following_you FROM login_t a, following_t b WHERE a.login_ID = b.followed_ID AND a.login_ID=" + l_ID + ";"; 
@@ -79,7 +84,7 @@
 	    java.sql.Statement username_s = con.createStatement();
 	    java.sql.Statement tweet_s = con.createStatement();
 	    java.sql.Statement image_s = con.createStatement();
-	
+
 		//executes the query:
 		java.sql.ResultSet rs1 = tweet_count_s.executeQuery(tweet_count_q);
 		java.sql.ResultSet rs2 = follower_count_s.executeQuery(follower_count_q);
@@ -224,35 +229,22 @@
 								</a>
 							</div>
 						</div>
+
+						<!--
+
+						Sidebar information 
+
+						-->
 						
 						<div class="container">
 							<div class="row">
 								<div class="upper" style="border-top: 1px solid #E8E8E8; width: 275px;">
   									<div class="col-md-1" style="width: 75px; height: 65px; padding-left: 10px;">
 										<p>
-  									  	<!--<a href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=l_ID%>"><strong><%=tweet_count%></strong><font color="000000"><br><br>Tweets</font></a>-->
   									  	<div>
   											<button class="btn btn-link btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
     											<font size="1" color="4D4D4D"><b>TWEETS</b></font>
   											</button>
-  											<!--<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-    											<div class="jumbotron" style="min-width:350px; background-color: white;">
-    												<a href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=l_ID%>"><font size="4" color="4D4D4D"><b>Tweets</b></font></a>
-    												<br><br>
-  													<% int ii = 1; 
-  													while(my_tweets.next()){%>
-  													<font color="000000"><%=ii + ") " + my_tweets.getString(1).replaceAll("&", "&amp;").replaceAll(">", "&gt;").replaceAll("<", "&#60;") + "\n" %></font>
-  													<br>
-  													<%ii++; 
-  													}%>
-  													<% 
-  													if(ii == 1){
-  														out.println("You have no tweets :(");
-  													}
-  													%>
-												</div>
-												</li>
-  											</ul>-->
   										</div>
   										</p>
   										<b><center><font color="000000" size="4"><%=tweet_count%></font></center></b>
@@ -260,7 +252,6 @@
   								
   									<div class="col-md-1" style="width: 95px; height: 65px; border-left: 1px solid #e8e8e8; padding-left: 10px;">
 										<p>
-  									  	<!--<a href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=l_ID%>"><strong><%=tweet_count%></strong><font color="000000"><br><br>Tweets</font></a>-->
   									  	<div>
   											<button class="btn btn-link btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
     											<font size="1" color="4D4D4D"><b>FOLLOWING</b></font>
@@ -269,7 +260,18 @@
     											<div class="jumbotron" style="min-width:350px; background-color: white;">
     												<a href="twitter-home.jsp?login_ID=<%=l_ID%>"><font size="4" color="4D4D4D"><b>FOLLOWING</b></font></a>
     												<br><br>
-  													<% ii = 1; 
+    												<% int ii = 1; 
+  														while(my_tweets.next()){%>
+  															<font color="000000"><%=ii + ") " + my_tweets.getString(1).replaceAll("&", "&amp;").replaceAll(">", "&gt;").replaceAll("<", "&#60;") + "\n" 	%></font>
+  															<br>
+  															<%ii++; 
+  															}%>
+  														<% 
+  														if(ii == 1){
+  															out.println("You have no tweets :(");
+  														}
+  													%>
+  													<% 
   													while(my_following.next()){
   														people_following.add(Integer.parseInt(my_following.getString(3))); 
   													%>
@@ -292,7 +294,6 @@
   								
   									<div class="col-md-1" style="width: 80px; height: 65px; border-left: 1px solid #e8e8e8; padding-left: 10px;">
 										<p>
-  									  	<!--<a href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=l_ID%>"><strong><%=tweet_count%></strong><font color="000000"><br><br>Tweets</font></a>-->
   									  	<div>
   											<button class="btn btn-link btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
     											<a href="twitter-followers.jsp?login_ID=<%=l_ID%>"><font size="1" color="4D4D4D"><b>FOLLOWERS</b></font></a>
@@ -324,22 +325,14 @@
   								<br><br><br><br>
   								<div class="upper" style="border-top: 1px solid #E8E8E8; width: 275px;"></div>
 							</div>
-						</div>                            	
-                            	<!--<div class="dropdown">
-  								<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-    								Tweets
-    								<span class="caret"></span>
-  								</button>
-  								<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-    								<div class="jumbotron">
-  										<h1>Hello, world!</h1>
-  										<p>...</p>
- 										<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-									</div>
-									</li>
-  								</ul>
-  								</div>-->
+						</div> 
 					</div>
+					<!-- 
+					
+					Trending sidebar 
+
+					-->
+
 					<div class="module other-side-content">
 						<div class="content"
 						<p>Currently Trending</p>
@@ -362,14 +355,25 @@
 			</div>
 			<!-- right column -->
 			
+			<!--
+			
+			Following suggestions
+
+			-->
+
 			<%
-			//out.println("F: " + (following_count)); 
 			if(following_count < 5){ //you don't have a ton of people you're following 
 			while(login_ID_set.next()){
+				//add all login IDs to a set - to figure out who you're not following
 				login_IDs.add(Integer.parseInt(login_ID_set.getString(1))); 
 			}
 			
 			%>
+			<!-- 
+
+			Center content 
+
+			-->
 				<div class="span8 content-main">
 					<div class="module">
 						<div class="content-header">
@@ -382,6 +386,7 @@
  							 <div class="row">
     							<div class="col-md-2" style="width:185px;">
     							<%
+    								//person one
     								int index1 = (int)Math.round(Math.floor((Math.random() * login_IDs.get(login_IDs.size()-1)) + 1)); 
     								
     								while(people_following.contains(index1) || !login_IDs.contains(index1) || index1==Integer.parseInt(l_ID))
@@ -573,7 +578,8 @@
 										<a href="insert-follower.jsp?follower_ID=<%=l_ID%>&followed_ID=<%=tweets.getString(3)%>" role="button" class="btn btn-default btn-small">Follow</a>-->
 								</div>
 								<% //date
-									//credit: http://jeromejaglale.com/doc/java/twitter
+									//takes date from database and formats it into twitter time
+									//credit: http://jeromejaglale.com/doc/java/twitter for info on correct format 
 									SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH); 
 									
 									Date created = null;
@@ -739,6 +745,11 @@
 										</div>
 									<% } %>
 
+									<!-- 
+
+										Dynamically creates javascript toggle functions for the reply bar. 
+
+									-->
 									<script language="javascript"> 
 										function toggle<%=tweets.getString(8)%>() {
 											var ele = document.getElementById("toggleText<%=tweets.getString(8)%>");
@@ -765,7 +776,7 @@
 										String replies_q = "SELECT a.text,a.d_t,a.login_ID,d.username,d.first_name,d.last_name,d.pic_link,a.tweet_ID,a.reply_ID FROM reply_t a,following_t b,login_t c, login_t d WHERE d.login_ID = a.login_ID AND a.tweet_ID=" + (""+reply_ID) + " GROUP BY a.d_t;";
             							java.sql.Statement replies_s = con.createStatement();
 										java.sql.ResultSet replies_set = replies_s.executeQuery(replies_q);
-
+										//better to use prepared statements, but it works because it's only a single integer 
 										String count_replies_q = "SELECT COUNT(*) FROM reply_t a,following_t b,login_t c, login_t d WHERE d.login_ID = a.login_ID AND a.tweet_ID=" + reply_ID + " GROUP BY a.d_t DESC;";
 										java.sql.Statement count_replies_s = con.createStatement();
 										java.sql.ResultSet count_replies_set = count_replies_s.executeQuery(count_replies_q);
@@ -786,32 +797,26 @@
 									%>
 
 									<%  
-										/*  If it is a retweet, you can retweet the original tweet (unless it is your own tweet). */
-										/* 	If it is not a retweet, you can retweet it once. */
-               						//checkIfRetweeted.setString(2, l_ID); 
-               						//out.println(checkIfRetweeted); 
+									//RETWEET GUIDELINES: 
+									/*  If it is a retweet, you can retweet the original tweet (unless it is your own tweet). */
+									/* 	If it is not a retweet, you can retweet it once. */
+
                						%>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%
-               						
+               						//correct retweeting image - delete the retweet, let you retweet, or greyed out 
                						if(my_ID > 0 || tweets.getString(3).equals(l_ID)){ 
-               						    //out.println("CANT RETWEET"); 
-               						    //out.println(tweets.getString(3));
                						    if(tweets.getString(3).equals(l_ID)){
-               						    	//out.println("1"); 
                						    	%>
                						    	<img src="images/retweeted.png" height="3%" width="3%">
                						    	<%
                						    }
                						    else {
-               						    	//out.println("2"); 
                						    	%>
                						    	<a href="delete-tweet.jsp?login_ID=<%=l_ID%>&tweet_ID=<%=my_ID%>&retweet_ID=<%=my_ID%>"><img src="images/retweet-green.png" height="3%" width="3%"></a>
                						    	<%
                						    }
-										//out.println("delete-tweet.jsp?login_ID=" + l_ID + "&tweet_ID=" + checkRetweeted.getString(1) + "&retweet_ID=" + checkRetweeted.getString(1));
                						} 
                						else if (retweet_ID != -1 ){ 
                							//it's a retweet, and you can retweet it
-               							//out.println("3"); 
                							if(tweeter_username.equals(username)){ %>
                								<img src="images/retweeted.png" height="3%" width="3%">
                								<%
@@ -827,33 +832,15 @@
                						}
                						else { 
                							//it's a tweet, and you can retweet it (most common)
-               							//out.println("4"); 
                							%>
                							<a href="insert-tweet.jsp?text=<%=tweets.getString(1).replaceAll("#", "%23")%>&login_ID=<%=l_ID%>&retweet_ID=<%=tweets.getString(8)%>"><img src="http://www.s-trip.com/wp-content/uploads/2014/06/icon-retweet.png" onmouseover="this.src='images/retweet-green.png'" onmouseout="this.src='http://www.s-trip.com/wp-content/uploads/2014/06/icon-retweet.png'"
                							height="3%" width="3%"></a>
                						<% } %>
-   
-									
-
-									<%/* if(retweet_ID == -1){ %>
-									<a href="insert-tweet.jsp?text=<%=tweets.getString(1).replaceAll("#", "%23")%>&login_ID=<%=l_ID%>&retweet_ID=<%=tweets.getString(8)%>"><img src="http://www.s-trip.com/wp-content/uploads/2014/06/icon-retweet.png" height="12" width="12"></a>
-									<% } 
-									else {
-									%> 
-									&nbsp&nbsp&nbsp&nbsp&nbsp<img src="images/retweeted.png" height="12" width="12">
-									<% } %>
-
-									<%
-									if(num_retweets > 0){
-										%> 
-										<%=num_retweets%>
-										<%
-									}
-									*/%>
 
 									&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 									<a href="twitter-favorite.jsp?tweet_ID=<%=reply_ID%>&login_ID=<%=l_ID%>"><img src="https://cdn3.iconfinder.com/data/icons/token/Token,%20128x128,%20PNG/Star-Favorites.png" height="3%" width="3%"></a>
 									<%
+										//Put the number of favorites net to the star 
 										String num_fav_q = "SELECT COUNT(*) FROM favorites_t where tweet_ID = \"" + reply_ID +"\";";
             							java.sql.Statement num_fav_s = con.createStatement();
 										java.sql.ResultSet num_fav_set = num_fav_s.executeQuery(num_fav_q);
@@ -870,11 +857,13 @@
 										}
 									%>
 									&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+									<!-- 
+
+										Show replies - similar to tweets 
+
+									-->
 									<img src="http://www.shopthreedots.com/blog/wp-content/uploads/2011/07/three_dots_iconic_logo1.jpg" height="20" width="20">
 										<div class="" id="toggleText<%=tweets.getString(8)%>" style="padding: 10px; width: 90%; display: none">
-											<!--<small>Replies</small>
-											<br>
-											<br>-->
 											<% while(replies_set.next()){ %>
 											<hr style="background:#787878; border:0; height:1px; width:93%; margin-top: 1px;margin-bottom: 1px" />
 											<div class="" style="width: 97%; height:73%;">
@@ -904,14 +893,13 @@
 																					<% 
 																						//underline the hashtags 
 																						String reply_text = replies_set.getString(1); 
-																						//out.println(reply_text); 
 																						String[] rep_split = reply_text.split(" "); 
 																						status = 0; 
-																						//out.println(text_split.length); 
+
 																						for(int jj = 0; jj < rep_split.length; jj ++){
 																							rep_split[jj] = rep_split[jj].replaceAll("&", "&amp;").replaceAll(">", "&gt;").replaceAll("<", "&#60;");
 																						}
-																						//out.println("before for"); 
+
 																						for(int jj = 0; jj < rep_split.length; jj ++){
 																							if(rep_split[jj].contains("#") && !rep_split[jj].contains("#60")){
 	            																				String tag = rep_split[jj].substring(1); 
@@ -946,8 +934,7 @@
 										                    									}
 										                    								}
 																							else {
-																								//why
-																								//out.println("print"); 
+																								//if not an @ or #, just print out the regular word
 																								out.print(rep_split[jj] + " "); 
 																							}
 																						}
@@ -1000,7 +987,8 @@
 	</font>
 </html>
 <%
+	//close the catch from the beginning of the document 
 	} catch (Exception e) {
 	   	out.println(e);
-	   }
+	}
 	%>

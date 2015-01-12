@@ -1,8 +1,9 @@
 Twitter clone for Computer Science
 ==================================
 
-Built with Twitter Bootstrap 
-See: compsci.dalton.org:8080/amilich/twitter_dir/twitter-home.jsp
+Built with Twitter Bootstrap and lots of code stolen from Twitter.com  
+
+_`For Education Purposes only`_
 
 ## Credits
 - [Twitter Bootstrap](https://twitter.github.com/bootstrap/)
@@ -10,13 +11,8 @@ See: compsci.dalton.org:8080/amilich/twitter_dir/twitter-home.jsp
 - [The Barack Obama Campaign](http://www.barackobama.com/)
 - _Put together by:_ [Regis Zaleman](http://www.dalton.org)
 - _For:_ [Gordy Campbell](http://www.dalton.org)
-- _Coded by:_ [Andrew Milich](github.com/amilich)
 
 ## Using
 - __Text Editor:__ [Sublime Text 3](http://www.sublimetext.com/3)
 - __CSS preprocessing language:__ [LESS](http://lesscss.org/)
 - __Build Tool:__ [CodeKit](http://incident57.com/codekit/)
-
-Uses JSP, MySQL, and Javascript to recreate Twitter. Includes twitter signup, settings, tweeting, following, retweeting, favoriting, and replying. Session variables and cookies maintain user's session. 
-
-Bootstrap theme from [Bootswatch](http://bootswatch.com/)

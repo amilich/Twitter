@@ -6,27 +6,38 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.text.ParseException" %> 
 <%@ page import="java.util.Date" %>
+<%@ page import="java.io.*" %>
+<%@ page import="java.util.Scanner" %>
 
 <!DOCTYPE html>
 
 <%
+	/* 
+		Form to sign up for twitter. 
+	*/
+
+	//we need a list of all username so you can't repeat 
 	String names = ""; 
 	try {
-		String url = ""; 
-		//open sql:
-    	java.sql.Connection con = null;
-    	Class.forName("com.mysql.jdbc.Driver").newInstance();
-    	url = "jdbc:mysql://localhost:3306/amilich_twitter";   //your db 
-    	con = DriverManager.getConnection(url, "amilich", "amilich"); //mysql id &  pwd
+		//open sql with data from file
+    	Scanner sc = new Scanner(new FileReader("/home/amilich/public_html/twitter_dir/keys.txt"));
+        String db_user = sc.nextLine(); 
+        String db_password = sc.nextLine(); 
+        String db_url = sc.nextLine(); 
+        java.sql.Connection con = null;
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        String url = db_url; 
+        con = DriverManager.getConnection(url, db_user, db_user); //mysql id &  pwd
+
     	int status = 0; 
-    	String username_q = "SELECT username from login_t;"; 
+    	String username_q = "SELECT username from login_t;"; //get entire username column
     	java.sql.Statement username_s = con.createStatement();
 		java.sql.ResultSet username_set = username_s.executeQuery(username_q);
 		while (username_set.next()){
-			names += "'" + username_set.getString(1) + "', "; 
+			names += "'" + username_set.getString(1) + "', "; //append usernames to big string 
 		}
 		names += "'_'"; 
-		names = names.trim(); 
+		names = names.trim(); //get rid of white space
 	}
 	catch(Exception e){
 		out.println(e); 
@@ -70,7 +81,7 @@
 				</div>
 			</div>
 		</div>
-		<!-- <div id="page-outer">
+		<div id="page-outer">
 			<div id="page-container" class="AppContent wrapper wrapper-signup">
 				<link href="css/twitter.css" rel="stylesheet">
 				<div class="page-canvas">
@@ -82,7 +93,7 @@
 							<font color="ff0000">
 							<input id="f1" type="text" style="padding: 15px;" class="text-input name-input" name="fullname" title="fullname" autocomplete="off" tabindex="1" placeholder="Full name">
 								<script type="text/javascript">
-		            				var f1 = new LiveValidation('f1');
+		            				var f1 = new LiveValidation('f1'); //add live validation to each form element
 		            				f1.add(Validate.Presence);
 		          				</script>
 							<br><br>
@@ -95,7 +106,7 @@
 							<input id="f3" type="text" style="padding: 15px;" class="text-input username-input" name="username" title="email" autocomplete="off" tabindex="1" placeholder="Username">
 								<script type="text/javascript">
 		            				var f15 = new LiveValidation('f3');
-									f15.add( Validate.Exclusion, { within: [ <%=names%> ], partialMatch: false } );
+									f15.add( Validate.Exclusion, { within: [ <%=names%> ], partialMatch: false } ); //validate username not on list
 									console.log(<%=names%>); 
 		          				</script>
 							<br><br>
@@ -114,12 +125,12 @@
 							<button type="submit" class="btn btn-default">Submit</button>
 							</font>
 							<br><br>
-							<small style="font-size: 50%;">By joining twitter, you agree to our <a href="twitter-terms.jsp"> terms. </a></small>
+							<small style="font-size: 50%;">By joining twitter, you agree to our <a href="twitter-terms.jsp"> terms. </a></small> <!-- Add terms and conditions -->
 						</form>
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div> 
 	</div>
 	
 	</span>
