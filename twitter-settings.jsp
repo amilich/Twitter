@@ -103,8 +103,6 @@
 %>
 
 <script>	
-	//setCookie("login_ID", "5", 1); 
-	
 	function setCookie(cname, cvalue, exdays) {
 	   	var d = new Date();
 	   	d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -124,17 +122,11 @@
 	}
 	
 	function checkCookie() {
-		//document.write("CHECKING   "); 
 	   	var user = getCookie("login_ID");
-		//document.write("DONE CHECKING \n");	
-	   	//document.write(user); 
 	   	if (user == "<%=l_ID%>") {
-	   		//document.write("NOT LOGGED IN"); 
 	   		return; 
 	   	} 
 	   	else {
-	   		//document.write(document.cookie); 
-	   		//document.write("<%=l_ID%> is logged in!"); 
 	       	window.location = "http://compsci.dalton.org:8080/amilich/twitter_dir/twitter-signin.jsp";
 	   	}
 	}
@@ -169,7 +161,8 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li><a href="twitter-home.jsp?login_ID=<%=l_ID%>">Home <span class="sr-only">(current)</span></a></li>
-						<li><a href="twitter-trending.jsp?login_ID=<%=l_ID%>">#discover</a></li>
+						<li><a href="twitter-trending.jsp?login_ID=<%=l_ID%>">#Discover</a></li>
+						<li><a href="twitter-find.jsp?login_ID=<%=l_ID%>">Find Friends</a></li>
 						<li class="active"><a href="#">Settings</a></li>
 						<li><a href="logout.jsp">Logout</a></li>
 					</ul>
@@ -216,27 +209,12 @@
 										<p>
   									  	<!--<a href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=l_ID%>"><strong><%=tweet_count%></strong><font color="000000"><br><br>Tweets</font></a>-->
   									  	<div>
-  											<button class="btn btn-link btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-    											<font size="1" color="4D4D4D"><b>TWEETS</b></font>
-  											</button>
-  											<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-    											<div class="jumbotron" style="min-width:350px; background-color: white;">
-    												<a href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=l_ID%>"><font size="4" color="4D4D4D"><b>Tweets</b></font></a>
-    												<br><br>
-  													<% int ii = 1; 
-  													while(my_tweets.next()){%>
-  													<font color="000000"><%=ii + ") " + my_tweets.getString(1).replaceAll("&", "&amp;").replaceAll(">", "&gt;").replaceAll("<", "&#60;") + "\n" %></font>
-  													<br>
-  													<%ii++; 
-  													}%>
-  													<% 
-  													if(ii == 1){
-  														out.println("You have no tweets :(");
-  													}
-  													%>
-												</div>
-												</li>
-  											</ul>
+  									  		<a href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=l_ID%>">
+  												<!--<button class="btn btn-link btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">-->
+  												<button class="btn btn-link btn-xs" type="button" aria-expanded="true">
+    												<font size="1" color="4D4D4D"><b>TWEETS</b></font>
+  												</button>
+  											</a>
   										</div>
   										</p>
   										<b><center><font color="000000" size="4"><%=tweet_count%></font></center></b>
@@ -253,7 +231,7 @@
     											<div class="jumbotron" style="min-width:350px; background-color: white;">
     												<a href="twitter-home.jsp?login_ID=<%=l_ID%>"><font size="4" color="4D4D4D"><b>FOLLOWING</b></font></a>
     												<br><br>
-  													<% ii = 1; 
+  													<% int ii = 1; 
   													while(my_following.next()){
   														people_following.add(Integer.parseInt(my_following.getString(3))); 
   													%>
@@ -401,23 +379,33 @@
 												compsci.dalton.org/<%=session.getAttribute("username")%>
 												</a>
 											</small>
+											<br>
+											<br>
+											<input type="submit" class="btn btn-small btn-primary" value="Update my profile">
+											<input type="hidden" class="tweet-box" name="login_ID" value="<%=l_ID%>" id="tweet-box-mini-home-profile">
+											<br> 
 									</div>
 								</div>
 							</div>
+							</form>
 							<div class="tweet original-tweet">
 								<div class="expanded-content js-tweet-details-dropdown">
 									<div style="padding-left: 30%;">
-										<b>Link to your profile image: </b>
+										<!--<b>Link to your profile image: </b>
 										<br>
 										<input placeholder="<%=session.getAttribute("pic_link")%>" type="text" name="pic_link">
-										<br><br>
-										<input type="submit" class="btn btn-small btn-primary" value="Update my profile">
-										<input type="hidden" class="tweet-box" name="login_ID" value="<%=l_ID%>" id="tweet-box-mini-home-profile">
+										<br><br>-->
+										<form action="upload_page.jsp" method="post" enctype="multipart/form-data">
+										    <b>Upload profile image:</b> <br><br>
+										    <input type="file" name="fileToUpload" id="fileToUpload"> <br>
+										    <input type="hidden" class="tweet-box" name="login_ID" value="<%=l_ID%>" id="tweet-box-mini-home-profile">
+										    <input type="submit" class="btn btn-small btn-primary" value="Upload Image" name="submit">
+										</form>
 									</div>
 								</div>
 							</div>
 						</div>
-						</form>
+
 						<!-- end tweet -->
 					</div>
 					<!-- end tweets div -->

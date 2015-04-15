@@ -170,7 +170,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title></title>
+		<title>Andrew's Twitter</title>
 		<meta name="description" content="">
 		<meta name="author" content="">
 		<style type="text/css">
@@ -185,6 +185,7 @@
 		<link rel="stylesheet" href="css/gordy_bootstrap.min.css">
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/styles.css" rel="stylesheet">
+		<link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
 		<script type="text/javascript" src="livevalidation_standalone.compressed.js"></script>
 
 	</head>
@@ -195,7 +196,8 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="">Home <span class="sr-only">(current)</span></a></li>
-						<li><a href="twitter-trending.jsp?login_ID=<%=l_ID%>">#discover</a></li>
+						<li><a href="twitter-trending.jsp?login_ID=<%=l_ID%>">#Discover</a></li>
+						<li><a href="twitter-find.jsp?login_ID=<%=l_ID%>">Find Friends</a></li>
 						<li><a href="twitter-settings.jsp?login_ID=<%=l_ID%>">Settings</a></li>
 						<li><a href="logout.jsp">Logout</a></li>
 						<!-- TERRIBLE SOLUTION -->
@@ -242,9 +244,12 @@
   									<div class="col-md-1" style="width: 75px; height: 65px; padding-left: 10px;">
 										<p>
   									  	<div>
-  											<button class="btn btn-link btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-    											<font size="1" color="4D4D4D"><b>TWEETS</b></font>
-  											</button>
+  									  		<a href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=l_ID%>">
+  												<!--<button class="btn btn-link btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">-->
+  												<button class="btn btn-link btn-xs" type="button" aria-expanded="true">
+    												<font size="1" color="4D4D4D"><b>TWEETS</b></font>
+  												</button>
+  											</a>
   										</div>
   										</p>
   										<b><center><font color="000000" size="4"><%=tweet_count%></font></center></b>
@@ -261,7 +266,7 @@
     												<a href="twitter-home.jsp?login_ID=<%=l_ID%>"><font size="4" color="4D4D4D"><b>FOLLOWING</b></font></a>
     												<br><br>
     												<% int ii = 1; 
-  														while(my_tweets.next()){%>
+  														/*while(my_tweets.next()){%>
   															<font color="000000"><%=ii + ") " + my_tweets.getString(1).replaceAll("&", "&amp;").replaceAll(">", "&gt;").replaceAll("<", "&#60;") + "\n" 	%></font>
   															<br>
   															<%ii++; 
@@ -269,7 +274,7 @@
   														<% 
   														if(ii == 1){
   															out.println("You have no tweets :(");
-  														}
+  														}*/
   													%>
   													<% 
   													while(my_following.next()){
@@ -348,8 +353,8 @@
 							%><br><%
 							counter ++; 
 						}%>
-						<br>
-						<small><a href="twitter-terms.jsp">Terms</a></small>
+						<!--<br>
+						<small><a href="twitter-terms.jsp">Terms</a></small>-->
 					</div>
 				</div>
 			</div>
@@ -599,10 +604,10 @@
 									// how much time since (ms)
 									Long duration = today.getTime() - created.getTime();
  							
-									int second = 1000;
-									int minute = second * 60;
-									int hour = minute * 60;
-									int day = hour * 24;
+									double second = 1000;
+									double minute = second * 60;
+									double hour = minute * 60;
+									double day = hour * 24;
  							
 									if (duration < second * 7) {
 										t_date = "right now";
@@ -656,7 +661,7 @@
 										<!--<img class="avatar" src="<%=tweets.getString(7)%>" alt="Barak Obama">-->
 										<% if(retweet_ID != -1){ %>
 											<img class="avatar" src="<%=tweeter_pic%>" alt="Barak Obama" height="50px" width="50px" style="top: 40px;">
-											<img src="http://www.s-trip.com/wp-content/uploads/2014/06/icon-retweet.png" height="12" width="12">
+											<img src="images/retweet_icon.jpg" height="12" width="12">
 										<% } %>
 										<% if(retweet_ID == -1){ %>
 											<img class="avatar" src="<%=tweets.getString(7)%>" alt="Barak Obama" height="50px" width="50px">
@@ -824,8 +829,8 @@
                							else {
 											%>
                								<a href="insert-tweet.jsp?text=<%=tweets.getString(1).replaceAll("#", "%23")%>&login_ID=<%=l_ID%>&retweet_ID=<%=tweeter_t_ID%>">
-               								<img src="http://www.s-trip.com/wp-content/uploads/2014/06/icon-retweet.png" 
-               								onmouseover="this.src='images/retweet-green.png'" onmouseout="this.src='http://www.s-trip.com/wp-content/uploads/2014/06/icon-retweet.png'"
+               								<img src="images/retweet_icon.jpg" 
+               								onmouseover="this.src='images/retweet-green.png'" onmouseout="this.src='images/retweet_icon.jpg'"
                								height="3%" width="3%"> 
                								</a>
                						<% 	}
@@ -833,13 +838,32 @@
                						else { 
                							//it's a tweet, and you can retweet it (most common)
                							%>
-               							<a href="insert-tweet.jsp?text=<%=tweets.getString(1).replaceAll("#", "%23")%>&login_ID=<%=l_ID%>&retweet_ID=<%=tweets.getString(8)%>"><img src="http://www.s-trip.com/wp-content/uploads/2014/06/icon-retweet.png" onmouseover="this.src='images/retweet-green.png'" onmouseout="this.src='http://www.s-trip.com/wp-content/uploads/2014/06/icon-retweet.png'"
+               							<a href="insert-tweet.jsp?text=<%=tweets.getString(1).replaceAll("#", "%23")%>&login_ID=<%=l_ID%>&retweet_ID=<%=tweets.getString(8)%>"><img src="images/retweet_icon.jpg" onmouseover="this.src='images/retweet-green.png'" onmouseout="this.src='images/retweet_icon.jpg'"
                							height="3%" width="3%"></a>
                						<% } %>
 
 									&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-									<a href="twitter-favorite.jsp?tweet_ID=<%=reply_ID%>&login_ID=<%=l_ID%>"><img src="https://cdn3.iconfinder.com/data/icons/token/Token,%20128x128,%20PNG/Star-Favorites.png" height="3%" width="3%"></a>
+									
 									<%
+										//check if you favorited the tweet 
+										String you_favorited = "SELECT COUNT(*) FROM favorites_t WHERE tweet_ID = ? AND login_ID = ?;";
+            							java.sql.PreparedStatement you_fav_ps = con.prepareStatement(you_favorited);
+            							you_fav_ps.setString(1, ""+reply_ID);
+            							you_fav_ps.setString(2, l_ID);
+										java.sql.ResultSet you_fav_rs = you_fav_ps.executeQuery();
+										you_fav_rs.next();
+										int you_fav = Integer.parseInt(you_fav_rs.getString(1)); 
+										if(you_fav > 0){
+											%>
+												<a href="twitter-favorite.jsp?tweet_ID=<%=reply_ID%>&login_ID=<%=l_ID%>"><img src="img/faves.png" height="3%" width="3%"></a>
+											<%
+										}
+										else {
+											%>
+												<a href="twitter-favorite.jsp?tweet_ID=<%=reply_ID%>&login_ID=<%=l_ID%>"><img src="img/nofaves.png" onmouseover="this.src='img/faves.png'" onmouseout="this.src='img/nofaves.png'" height="3%" width="3%"></a>
+											<%
+										}
+
 										//Put the number of favorites net to the star 
 										String num_fav_q = "SELECT COUNT(*) FROM favorites_t where tweet_ID = \"" + reply_ID +"\";";
             							java.sql.Statement num_fav_s = con.createStatement();
@@ -848,9 +872,7 @@
 										int num_faves = Integer.parseInt(num_fav_set.getString(1)); 
 										
 										if(num_faves > 0){
-											%> 
-											<%=num_faves%>
-											<%
+											 
 										}
 										else {
 											out.print("&nbsp&nbsp"); 
@@ -967,7 +989,7 @@
 							</div>
 						</div>
 						<!-- end tweet -->
-						<%} %> 
+						<% } %> 
 					</div>
 					<!-- end tweets div -->
 					<div class="stream-footer"></div>

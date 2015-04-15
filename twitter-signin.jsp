@@ -1,5 +1,38 @@
+<%@ page language="java" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="com.mysql.jdbc.*" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.text.ParseException" %> 
+<%@ page import="java.util.Date" %>
+<%@ page import="java.io.*" %>
+<%@ page import="java.util.Scanner" %>
 
 <!DOCTYPE html>
+
+<script src="lib/sweet-alert.min.js"></script> 
+<link rel="stylesheet" type="text/css" href="lib/sweet-alert.css">
+
+<%
+
+  String msg = request.getParameter("msg");
+  try{ 
+    if(msg.toLowerCase().contains("fail")){
+      %>
+      <script> 
+        sweetAlert("Login failed", "Please try again", "error");
+      </script>
+      <%
+      out.println("failure"); 
+    }
+  }
+  catch(Exception e){
+    //out.println(e); 
+  }
+
+%>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -67,7 +100,8 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li><a href="">Home <span class="sr-only">(current)</span></a></li>
-						<li><a href="#">#discover</a></li>
+						<li><a href="#">#Discover</a></li>
+            <li><a href="#">Find Friends</a></li>
 						<li><a href="#">Settings</a></li>
 						<li><a href="logout.jsp">Logout</a></li>
 						<!-- TERRIBLE SOLUTION -->

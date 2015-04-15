@@ -66,19 +66,16 @@
 			<%
 		}
 		if(!set){
-			%>
-				<script>
-					//it didn't work
-				    window.location.href = "http://compsci.dalton.org:8080/amilich/twitter_dir/twitter-signin.jsp"; 
-				</script>
-			<%
+			response.sendRedirect("twitter-signin.jsp?msg=fail"); 
+		}
+		else {
+			response.sendRedirect("twitter-home.jsp?login_ID=" + login_ID); 
 		}
     }
     catch (Exception e){
     	out.println(e); 
     }
     //you logged in!
-    response.sendRedirect("twitter-home.jsp?login_ID=" + login_ID); 
 %>
 
 <body>

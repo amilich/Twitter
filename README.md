@@ -1,7 +1,7 @@
 Twitter clone for Computer Science
 ==================================
 
-Built with Twitter Bootstrap and lots of code from Twitter.com by Andrew Milich 
+Built with Twitter Bootstrap and lots of code stolen from Twitter.com  
 
 _`For Education Purposes only`_
 
@@ -9,7 +9,8 @@ _`For Education Purposes only`_
 - [Twitter Bootstrap](https://twitter.github.com/bootstrap/)
 - [Twitter](http://twitter.com)
 - [The Barack Obama Campaign](http://www.barackobama.com/)
-- [The Dalton School] 
+- _Put together by:_ [Regis Zaleman](http://www.dalton.org)
+- _For:_ [Gordy Campbell](http://www.dalton.org)
 
 ## Using
 - __Text Editor:__ [Sublime Text 3](http://www.sublimetext.com/3)

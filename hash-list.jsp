@@ -176,7 +176,8 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li><a href="twitter-home.jsp?login_ID=<%=l_ID%>">Home <span class="sr-only">(current)</span></a></li>
-						<li><a href="twitter-trending.jsp?login_ID=<%=l_ID%>">#discover</a></li>
+						<li><a href="twitter-trending.jsp?login_ID=<%=l_ID%>">#Discover</a></li>
+						<li><a href="twitter-find.jsp?login_ID=<%=l_ID%>">Find Friends</a></li>
 						<li><a href="twitter-settings.jsp?login_ID=<%=l_ID%>">Settings</a></li>
 						<li><a href="logout.jsp">Logout</a></li>
 						<!-- TERRIBLE SOLUTION -->
@@ -419,7 +420,7 @@
 							int n = (int) Math.floor(duration / minute);
 							t_date = n + " minutes ago";
 						}
- 						
+						
 						else if (duration < hour * 2) {
 							t_date = "about 1 hour ago";
 						}
@@ -428,6 +429,7 @@
 							int n = (int) Math.floor(duration / hour);
 							t_date = n + " hours ago";
 						}
+						
 						else if (duration > day && duration < day * 2) {
 							t_date = "yesterday";
 						}
@@ -435,7 +437,9 @@
 						else if (duration < day * 365) {
 							int n = (int) Math.floor(duration / day);
 							t_date = n + " days ago";
-						} else {
+						} 
+						
+						else {
 							t_date = "over a year ago";
 						}
 					%>

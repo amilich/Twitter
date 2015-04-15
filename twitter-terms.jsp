@@ -28,29 +28,6 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    
-
-    
-    <script type="text/javascript">
-//<![CDATA[
-if(!document.cookie.match(/nodocdom=1/)){document.domain = 'twitter.com'};function fn(){document.write = "";window.top.location = window.self.location;setTimeout(function(){document.body.innerHTML = '';},0);window.self.onload = function(evt){document.body.innerHTML = '';};}if(window.top !== window.self){try{if(window.top.location.host){}else{fn();}}catch(e){fn();}}
-//]]>
-</script>
-    <script type="text/javascript">
-//<![CDATA[
-(function(g){var c=g.location.href.split("#!");if(c[1]){g.location.replace(g.HBR = (c[0].replace(/\/*$/, "") + "/" + c[1].replace(/^\/*/, "")));}else return true})(window);
-//]]>
-</script>
-    <script type="text/javascript" charset="utf-8">
-      if (!twttr) {
-        var twttr = {}
-      }
-
-      // Benchmarking load time.
-      // twttr.timeTillReadyUnique = '81d8afbfc47d23da';
-      // twttr.timeTillReadyStart = new Date().getTime();
-    </script>
-
         <script type="text/javascript">
 //<![CDATA[
 var page={};var onCondition=function(D,C,A,B){D=D;A=A?Math.min(A,5):5;B=B||100;if(D()){C()}else{if(A>1){setTimeout(function(){onCondition(D,C,A-1,B)},B)}}};

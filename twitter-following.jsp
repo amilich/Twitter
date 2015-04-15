@@ -228,7 +228,8 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li><a href="twitter-home.jsp?login_ID=<%=l_ID%>">Home <span class="sr-only">(current)</span></a></li>
-						<li><a href="twitter-trending.jsp?login_ID=<%=l_ID%>">#discover</a></li>
+						<li><a href="twitter-trending.jsp?login_ID=<%=l_ID%>">#Dicsover</a></li>
+            <li><a href="twitter-find.jsp?login_ID=<%=l_ID%>">Find Friends</a></li>
 						<li><a href="twitter-settings.jsp?login_ID=<%=l_ID%>">Settings</a></li>
 						<li><a href="logout.jsp">Logout</a></li>
 						<!-- TERRIBLE SOLUTION -->
@@ -487,7 +488,6 @@
                                                         </a>
                                                     </p>
                                                 </div>
-                                            </a>
                                                 <div class="expanded-content js-tweet-details-dropdown"></div>
                                             </div>
                                         </div>

@@ -2,19 +2,16 @@
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="com.mysql.jdbc.*" %>
-<%@ page import="java.text.DateFormat" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.text.ParseException" %> 
-<%@ page import="java.util.Date" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.Scanner" %>
 
 <!doctype html>
 <%
-	Scanner sc = new Scanner(new FileReader("/home/amilich/public_html/twitter_dir/keys.txt"));
+ 	Scanner sc = new Scanner(new FileReader("/home/amilich/public_html/twitter_dir/keys.txt"));
 	String db_user = sc.nextLine(); 
 	String db_password = sc.nextLine(); 
 	String db_url = sc.nextLine(); 
+
 	String l_ID = request.getParameter("login_ID");
 	ArrayList<Integer> people_following = new ArrayList<Integer>();
 
@@ -25,7 +22,7 @@
 		}
 	}
 	catch(Exception e){
-		response.sendRedirect("twitter-signin.jsp"); 
+			response.sendRedirect("twitter-signin.jsp"); 
 	}
 
 	try {
@@ -172,11 +169,10 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li><a href="twitter-home.jsp?login_ID=<%=l_ID%>">Home <span class="sr-only">(current)</span></a></li>
-						<li class="active"><a href="twitter-trending.jsp?login_ID=<%=l_ID%>">#Discover</a></li>
-						<li><a href="twitter-find.jsp?login_ID=<%=l_ID%>">Find Friends</a></li>
+						<li><a href="twitter-trending.jsp?login_ID=<%=l_ID%>">#Discover</a></li>
+						<li class="active"><a href="twitter-find.jsp?login_ID=<%=l_ID%>">Find Friends</a></li>
 						<li><a href="twitter-settings.jsp?login_ID=<%=l_ID%>">Settings</a></li>
 						<li><a href="logout.jsp">Logout</a></li>
-						<!-- TERRIBLE SOLUTION -->
 					</ul>
 					<a class="navbar-brand" href="#"><img style="max-width:25px; margin-top: -7px;"
 						src="images/logo.png"></a>
@@ -316,25 +312,35 @@
 					</div>
 					<div class="module other-side-content">
 						<div class="content"
-						<p>The latest and most popular <a href="#"> #hashtags </a>.</p>
+						<p>Currently Trending</p>
+						<%
+						String trend_q = "SELECT a.hash_tag,a.hash_ID, COUNT(*) as count FROM hash_t a, hash_tweet_t b WHERE a.hash_ID = b.hash_ID GROUP BY hash_tag ORDER BY count DESC;";
+            			java.sql.Statement trend_s = con.createStatement();
+						java.sql.ResultSet trend_set = trend_s.executeQuery(trend_q);
+						int counter = 0; 
+						while(trend_set.next() && counter < 5){
+							String trend = trend_set.getString(1); 
+							trend = trend.replaceAll("&", "&amp;").replaceAll(">", "&gt;").replaceAll("<", "&#60;").replaceAll("!", "&#33;").replaceAll("!", "&#33;");
+							%><a href="hash-list.jsp?login_ID=<%=l_ID%>&hash_ID=<%=trend_set.getString(2)%>&hash_text=<%=trend_set.getString(1)%>">#<%=trend + " "%></a><%
+							%><br><%
+							counter ++; 
+						}%>
 					</div>
 				</div>
 			</div>
+
+			<% 
+				String users_query = "Select username,first_name,last_name,pic_link,description,login_ID from login_t;";
+				java.sql.PreparedStatement get_users = con.prepareStatement(users_query); 
+				java.sql.ResultSet user_set = get_users.executeQuery(); 
+			%>
 			<!-- right column -->
 			<div class="span8 content-main">
+				<%
+					while(user_set.next()){
+					if(!l_ID.equals("" + user_set.getString(6))){
+				%>
 				<div class="module">
-					<div class="content-header">
-						<!--<div class="header-inner module">
-							<font color="#7F7F7F">
-							<h5><b>Tweets</b></h5>
-							<h5>What's happening now, tailored for you</h5>
-							</font>
-						</div>-->
-						<div class="header-inner">
-							<h4>Trending</h4>
-							<!-- took out tweet form -->
-						</div>
-					</div>
 					<!-- new tweets alert -->
 					<div class="stream-item hidden">
 						<div class="new-tweets-bar js-new-tweets-bar well">
@@ -342,154 +348,53 @@
 						</div>
 					</div>
 					<!-- all tweets -->
-					<%
-					String trend_q = "SELECT a.hash_tag,a.hash_ID, COUNT(*) as count FROM hash_t a, hash_tweet_t b WHERE a.hash_ID = b.hash_ID GROUP BY hash_tag ORDER BY count DESC;";
-            		java.sql.Statement trend_s = con.createStatement();
-					java.sql.ResultSet trend_set = trend_s.executeQuery(trend_q);
-					int count = 0; 
-					while(trend_set.next() && count < 5){
-						count ++; 
-					%>
-					
 					<div class="stream home-stream">
+						<!-- start tweet -->
 						<div class="js-stream-item stream-item expanding-string-item">
 							<div class="tweet original-tweet">
-								<div>
-									<p class="js-tweet-text">
-										<h4>&nbsp
-											<a href="hash-list.jsp?login_ID=<%=l_ID%>&hash_ID=<%=trend_set.getString(2)%>&hash_text=<%=trend_set.getString(1)%>">#<%=trend_set.getString(1) + " "%></a>
-											<%
-												String trend = trend_set.getString(3); 
-												trend = trend.replaceAll("&", "&amp;").replaceAll(">", "&gt;").replaceAll("<", "&#60;").replaceAll("!", "&#33;").replaceAll("!", "&#33;");
-											%>
-											<font size="2">- <%=trend%> recent uses</font>
-										</h4>
-									</p>
+								<div class="expanded-content js-tweet-details-dropdown">
+									<div>
+										<div class="content">
+                                        	<div class="stream-item-header">
+                                        		<div class="row-fluid" style="height: 60px;">
+												  	<div class="span3">
+												  		<a class="account-group" href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=user_set.getString(6)%>">
+                                        	    		    <img class="avatar" src="<%=user_set.getString(4)%>" alt="Barak Obama">
+                                        	    		    <strong class="fullname"><%=user_set.getString(2) + " " + user_set.getString(3)%></strong>
+                                        	    		    <span>&rlm;</span>
+                                        	    		    <span class="username">
+                                        	    		        <b><%="@" + user_set.getString(1)%></b>
+                                        	    		    </span>
+                                        	    		</a>
+												  	</div>
+												  	<div class="span5">
+												  		<div class="js-tweet-text">
+												  			<small>
+                                        				   		<%=user_set.getString(5).replaceAll("&", "&amp;").replaceAll(">", "&gt;").replaceAll("<", "&#60;").replaceAll("!", "&#33;").replaceAll("!", "&#33;")%> 
+                                        					</small>
+                                        				</div>
+												  	</div>
+												  	<div class="span4">
+												  		<a href="insert-follower.jsp?follower_ID=<%=l_ID%>&followed_ID=<%=user_set.getString(6)%>" type="submit" style="margin-left: 50px;" class="btn btn-default">Follow </a>
+												  	</div>
+												</div>
+                                        	</div>
+                                        </div>
+									</div>
 								</div>
-								
 							</div>
 						</div>
+						<!-- end tweet -->
+						
 					</div>
-					<% } %>
 					<!-- end tweets div -->
-					<div class="stream-footer">
-						<div class="content-header">
-							<div class="header-inner">
-								<h4>Here are some people you might enjoy following</h4>
-								<!--<h2 class="js-timeline-title">Here are some people you might enjoy following.</h2>-->
-							</div>
-						</div>
-						<br>
-						<div class="container" style="max-height:110px; vertical-align:top;">
- 							 <div class="row">
-    							<div class="col-md-2" style="width:185px;">
-    							<%
-    								while(login_ID_set.next()){
-										login_IDs.add(Integer.parseInt(login_ID_set.getString(1))); 
-									}
-    							
-									int index1 = (int)Math.round(Math.floor((Math.random() * login_IDs.get(login_IDs.size()-1)) + 1)); 
-
-									int stop = 0; 
-    								while(people_following.contains(index1) || !login_IDs.contains(index1) || index1==Integer.parseInt(l_ID)){
-    									index1 = (int)Math.round(Math.floor((Math.random() * login_IDs.get(login_IDs.size()-1)) + 1)); 
-    									if(stop > 2*login_IDs.size())
-    										break;
-    									stop ++; 
-    								}
-    								
-									String info_q = "SELECT first_name,last_name,username,pic_link from login_t WHERE login_ID=" + index1 + ";"; 
-									java.sql.Statement info_s = con.createStatement();
-									java.sql.ResultSet info = info_s.executeQuery(info_q);
-									info.next(); 
-    							%>
-    							<a href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=index1%>" class="account-group">
-									<strong class="fullname"><%out.println(info.getString(1) + " " + info.getString(2));%></strong>
-									<span>&rlm;</span>
-									<span class="username">
-									<font color="999999">
-									<br><s>@</s>
-									<b><%=info.getString(3)%></b>
-									</span>
-									</font>
-									<br><br>
-									<img class="avatar size73" style="max-height: 70px" height="70px" width="70px"  src="<%=info.getString(4)%>" alt="Barak Obama">
-									<a class="btn btn-info" type="button" href="insert-follower.jsp?follower_ID=<%=l_ID%>&followed_ID=<%=index1%>">Follow</a>
-									<br><br>
-								</a>
-    							
-    							</div>
-    							<div class="col-md-2" style="width:185px; border-left: 1px solid #e8e8e8;">
-    							<%
-    								int index2 = (int)Math.round(Math.floor((Math.random() * login_IDs.get(login_IDs.size()-1)) + 1)); 
-    								
-    								stop = 0; 
-    								while(people_following.contains(index2) || !login_IDs.contains(index2) || index1 == index2 || index2==Integer.parseInt(l_ID)){
-    									index2 = (int)Math.round(Math.floor((Math.random() * login_IDs.get(login_IDs.size()-1)) + 1)); 
-    									if(stop > 2*login_IDs.size())
-    										break;
-    									stop ++; 
-    								}
-    								
-									info_q = "SELECT first_name,last_name,username,pic_link from login_t WHERE login_ID=" + index2 + ";"; 
-									info_s = con.createStatement();
-									info = info_s.executeQuery(info_q);
-									info.next(); 
-    							%>
-    							<a href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=index2%>" class="account-group">
-									<strong class="fullname"><%out.println(info.getString(1) + " " + info.getString(2));%></strong>
-									<span>&rlm;</span>
-									<span class="username">
-									<font color="999999">
-									<br><s>@</s>
-									<b><%=info.getString(3)%></b>
-									</span>
-									</font>
-									<br><br>
-									<img class="avatar size73" style="max-height: 70px" height="70px" width="70px" src="<%=info.getString(4)%>" alt="Barak Obama">
-									<a class="btn btn-info" type="button" href="insert-follower.jsp?follower_ID=<%=l_ID%>&followed_ID=<%=index2%>">Follow</a>
-									<br><br>
-								</a>
-    							</div>
-    							<div class="col-md-2" style="width:185px; border-left: 1px solid #e8e8e8;">
-    							<%
-    								int index3 = (int)Math.round(Math.floor((Math.random() * login_IDs.get(login_IDs.size()-1)) + 1)); 
-    								
-    								stop = 0; 
-    								while(people_following.contains(index3) || !login_IDs.contains(index3) || index3 == index2 || index3 == index1 || index3==Integer.parseInt(l_ID)){
-    									index3 = (int)Math.round(Math.floor((Math.random() * login_IDs.get(login_IDs.size()-1)) + 1)); 
-    									if(stop > 2*login_IDs.size())
-    										break;
-    									stop ++; 
-    								}
-    								
-									info_q = "SELECT first_name,last_name,username,pic_link from login_t WHERE login_ID=" + index3 + ";"; 
-									info_s = con.createStatement();
-									info = info_s.executeQuery(info_q);
-									info.next(); 
-    							%>
-    							<a href="twitter-following.jsp?login_ID=<%=l_ID%>&view_ID=<%=index3%>" class="account-group">
-									<strong class="fullname"><%out.println(info.getString(1) + " " + info.getString(2));%></strong>
-									<span>&rlm;</span>
-									<span class="username">
-									<font color="999999">
-									<br><s>@</s>
-									<b><%=info.getString(3)%></b>
-									</span>
-									</font>
-									<br><br>
-									<img class="avatar size73" style="max-height: 70px" height="70px" width="70px" src="<%=info.getString(4)%>" alt="Barak Obama">
-									<a class="btn btn-info" type="button" href="insert-follower.jsp?follower_ID=<%=l_ID%>&followed_ID=<%=index3%>">Follow</a>
-									<br><br>
-								</a>
-    							</div>
-  							</div>
-						</div>
-						<br><br>
-					</div>
+					<div class="stream-footer"></div>
 					<div class="hidden-replies-container"></div>
 					<div class="stream-autoplay-marker"></div>
 				</div>
+				<% } 
+						}
+				%>
 			</div>
 		</div>
 		</div>
