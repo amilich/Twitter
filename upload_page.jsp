@@ -11,12 +11,12 @@
 
 <%
 	java.sql.Connection conn = null;
-    ServletContext context = getServletContext();
-    String directory = "";
-    String name = "";
+	ServletContext context = getServletContext();
+	String directory = "";
+	String name = "";
 	String tile_text_file = "";
 	String fn = "";
-    
+	
 	Class.forName("com.mysql.jdbc.Driver").newInstance();
 	String url = "jdbc:mysql://localhost:3306/amilich_twitter";
 	
@@ -51,7 +51,6 @@
 		//status = ps.executeUpdate();
 		
 		String link = "images/uploaded/" + fn; 
-		//out.println(link); 
 
 		ps_link.setString(1, link); 
 		ps_link.setString(2, login_ID); 
@@ -61,7 +60,6 @@
 
 		String redirectURL="";
 		redirectURL="twitter-home.jsp?login_ID="+session.getAttribute("login_ID");
-		//out.println(redirectURL); 
 		response.sendRedirect(redirectURL); 
 	}
 	catch(Exception e){
